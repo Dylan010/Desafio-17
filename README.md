@@ -64,32 +64,57 @@ Este proyecto implementa un SGSI básico enfocado en la autenticación de dos fa
    ```
    sudo systemctl restart sshd
    ```
+### 2. Monitoreo de integridad con Tripwire
 
-### 2. Monitoreo de integridad con AIDE
-
-1. Instala AIDE:
+1. Instala Tripwire:
    ```
-   sudo apt-get install -y aide
-   ```
-
-2. Inicializa la base de datos de AIDE:
-   ```
-   sudo aideinit
-   sudo mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+   sudo apt-get install -y tripwire
    ```
 
-3. Configura AIDE:
-   ```
-   sudo nano /etc/aide/aide.conf
-   ```
-   Agrega o modifica reglas según tus necesidades.
+2. Durante la instalación, se te pedirá que configures dos contraseñas: una para el sitio y otra para la clave local. Asegúrate de recordarlas.
 
-4. Ejecuta una comprobación manual:
+3. Inicializa la base de datos de Tripwire:
    ```
-   sudo aide --check
+   sudo tripwire --init
+   ```
+
+4. Ejecuta un chequeo inicial:
+   ```
+   sudo tripwire --check
+   ```
+
+5. Para personalizar qué archivos y directorios monitorear, edita el archivo de política:
+   ```
+   sudo nano /etc/tripwire/twpol.txt
+   ```
+   Modifica las reglas según tus necesidades.
+
+6. Después de modificar la política, actualiza la base de datos:
+   ```
+   sudo twadmin --create-polfile /etc/tripwire/twpol.txt
+   sudo tripwire --init
+   ```
+
+7. Para ejecutar una comprobación manual:
+   ```
+   sudo tripwire --check
    ```
 
 ## Verificación
+
+### Prueba de Tripwire
+
+1. Modifica un archivo monitoreado:
+   ```
+   sudo nano /etc/passwd
+   ```
+   Realiza un cambio pequeño y guarda.
+
+2. Ejecuta Tripwire:
+   ```
+   sudo tripwire --check
+   ```
+3. Verifica que Tripwire detecte y reporte el cambio.
 
 ### Prueba de 2FA
 
@@ -99,37 +124,15 @@ Este proyecto implementa un SGSI básico enfocado en la autenticación de dos fa
    ```
 2. Deberías ser solicitado por tu contraseña y luego por un código de verificación.
 
-### Prueba de AIDE
-
-1. Modifica un archivo monitoreado:
-   ```
-   sudo nano /etc/passwd
-   ```
-   Realiza un cambio pequeño y guarda.
-
-2. Ejecuta AIDE:
-   ```
-   sudo aide --check
-   ```
-3. Verifica que AIDE detecte y reporte el cambio.
-
 ## Mantenimiento y mejoras
 
 - Ejecuta `sudo aide --update` regularmente para actualizar la base de datos de AIDE.
 - Considera automatizar las comprobaciones de AIDE y el envío de informes.
 - Revisa y actualiza las configuraciones de seguridad periódicamente.
-
-## Solución de problemas
-
-Si encuentras problemas durante la configuración o uso:
-
-1. Verifica los logs del sistema:
-   ```
-   sudo journalctl -xe
-   ```
-2. Para problemas con SSH, revisa `/var/log/auth.log`:
-   ```
-   sudo tail -f /var/log/auth.log
-   ```
-3. Para problemas con AIDE, revisa la salida de los comandos para errores específicos.
+- Ejecuta `sudo tripwire --check` regularmente para verificar la integridad del sistema.
+- Considera automatizar las comprobaciones de Tripwire y el envío de informes.
+- Actualiza la base de datos de Tripwire después de cambios autorizados con:
+  ```
+  sudo tripwire --update --twrfile /var/lib/tripwire/report/<nombre_del_reporte>.twr
+  ```
 
