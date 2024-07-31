@@ -1,6 +1,6 @@
 # Sistema de Gestión de Seguridad de la Información (SGSI)
 
-Este proyecto implementa un SGSI básico enfocado en la autenticación de dos factores (2FA) para SSH y el monitoreo de integridad de archivos utilizando AIDE en un entorno Ubuntu Server.
+Este proyecto implementa un SGSI básico enfocado en la autenticación de dos factores (2FA) para SSH y el monitoreo de integridad de archivos utilizando Tripwire en un entorno Ubuntu Server.
 
 ## Requisitos previos
 
