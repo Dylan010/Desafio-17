@@ -7,6 +7,5 @@ Vagrant.configure("2") do |config|
   end
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    apt-get install -y nginx mysql-server libpam-google-authenticator tripwire
-  SHELL
+    apt-get install -y nginx mysql-server
 end
