@@ -120,14 +120,12 @@ Este proyecto implementa un SGSI básico enfocado en la autenticación de dos fa
 
 1. Desde tu máquina host, intenta conectarte por SSH:
    ```
-   ssh vagrant@192.168.33.10
+   ssh vagrant@192.168.56.10
    ```
 2. Deberías ser solicitado por tu contraseña y luego por un código de verificación.
 
 ## Mantenimiento y mejoras
 
-- Ejecuta `sudo aide --update` regularmente para actualizar la base de datos de AIDE.
-- Considera automatizar las comprobaciones de AIDE y el envío de informes.
 - Revisa y actualiza las configuraciones de seguridad periódicamente.
 - Ejecuta `sudo tripwire --check` regularmente para verificar la integridad del sistema.
 - Considera automatizar las comprobaciones de Tripwire y el envío de informes.
